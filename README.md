@@ -65,7 +65,7 @@ Executar teste:
 ```
 Gerar artefatos:
 ```yml
-  - name: Criar artefato com resultados dos testes
+  - name: Criar artefato com resultado do teste
      run: |
        mkdir -p artifact
        pytest > artifact/test_results.log
