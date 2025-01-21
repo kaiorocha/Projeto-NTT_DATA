@@ -66,38 +66,17 @@ Etapas:
 
 Enviar e-mail de notificação:
 
-name: Enviar e-mail de notificação uses: dawidd6/action-send-mail@v3 with: server_address: smtp.gmail.com server_port: 587 username: 
-s
-e
-c
-r
-e
-t
-s
-.
-E
-M
-A
-I
-L
-U
-S
-E
-R
-N
-A
-M
-E
-p
-a
-s
-s
-w
-o
-r
-d
-:
-{{ secrets.EMAIL_PASSWORD }} subject: 'CI Pipeline Status' body: 'CI Pipeline Failed' to: ${{vars.VAR_EMAIL}} from: 'ci-notifications@gmail.com'
+name: Enviar e-mail de notificação
+uses: dawidd6/action-send-mail@v3
+  with: 
+  server_address: smtp.gmail.com 
+  server_port: 587 
+  username: {{ secrets.EMAIL_USERNAME }}
+  password: {{ secrets.EMAIL_PASSWORD }}
+  subject: 'CI Pipeline Status' 
+  body: 'CI Pipeline Failed' 
+  to: ${{vars.VAR_EMAIL}} 
+  from: 'ci-notifications@gmail.com'
 
 Variáveis e Segredos
 
