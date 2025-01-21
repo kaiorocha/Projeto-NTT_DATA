@@ -85,10 +85,11 @@ deploy
 Etapas:
 
  Aplicar restrição de aprovação do deploy
+````yml
  - environment:
     - name: produção  
     - url: https://site-ntt.com
-
+```
   Instalar o Vercel:
 ```yml
   - name: Instalando o vercel
