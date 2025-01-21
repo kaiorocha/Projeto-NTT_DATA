@@ -49,7 +49,7 @@ jobs:
       run: npm install --global vercel
         
     - name: Deploy
-      run: vercel deploy --yes --prod --token=${{secrets.TOKEN_VERCEL}}
+      run: vercel deploy --yes --token=${{secrets.TOKEN_VERCEL}}
 
     - name: Fazer deploy para produção
       run: |
