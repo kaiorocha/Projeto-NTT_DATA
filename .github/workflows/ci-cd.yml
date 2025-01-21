@@ -49,15 +49,19 @@ jobs:
        run: |
         echo "Fazendo deploy..."
 
-     - name: Notify on failure
-       if: failure()
-       uses: dawidd6/action-send-mail@v3
-       with:
+  notify:
+    runs-on: ubuntu-latest
+    needs: [build, deploy]  # Esse job depende de build e deploy
+    if: failure()
+    steps:
+      - name: Enviar e-mail de notificação
+        uses: dawidd6/action-send-mail@v3
+        with:
           server_address: smtp.gmail.com
           server_port: 587
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: 'CI Pipeline Failed'
+          subject: 'CI Pipeline Status'
           body: 'CI Pipeline Failed'
           to: ${{vars.VAR_EMAIL}}
           from: 'ci-notifications@gmail.com'
