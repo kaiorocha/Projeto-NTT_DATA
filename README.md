@@ -104,7 +104,7 @@ notify
 
   Este job é executado apenas em caso de falha nos jobs anteriores.
 
-Etapas:
+Etapa:
 
   Enviar e-mail de notificação:
 ```yml
