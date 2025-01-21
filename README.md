@@ -1,5 +1,8 @@
 Documentação do Workflow de CI - NTT DATA
 
+Estrutura do Workflow no draw.io:
+![CI_CD-NTT drawio](https://github.com/user-attachments/assets/8fe2a554-3547-424f-aa1a-d76856ab5792)
+
 Este documento descreve o fluxo de trabalho de integração contínua (CI) configurado no GitHub Actions para o projeto NTT DATA.
 
 Visão Geral
