@@ -1,106 +1,122 @@
-Descrição do WorkFlow:
+Documentação do Workflow de CI - NTT DATA
 
-Este arquivo é um workflow do GitHub Actions para um processo de CI/CD. Ele é acionado sempre que há um push na branch main, conforme solicitado na tarefa.O workflow foi divido em três jobs: build, deploy e notify.
+Este documento descreve o fluxo de trabalho de integração contínua (CI) configurado no GitHub Actions para o projeto NTT DATA.
 
-Principais definições:
+Visão Geral
 
-name: CI - NTT DATA
+O fluxo de trabalho automatiza as seguintes etapas:
 
-on:
- push:
-   branches:
-       - main
+Clonagem do repositório.
+Configuração do ambiente Python.
+Instalação das dependências.
+Execução de testes.
+Geração de artefatos de teste.
+Implantação na plataforma Vercel.
+Envio de notificação por e-mail em caso de falha.
+Gatilhos
 
-name: CI - NTT DATA
-Descrição: Este é o nome do workflow.
+Este workflow é acionado quando há um push para a branch main.
+Name: CI - NTT DATA
 
 on: push: branches: - main
-Descrição: O workflow é acionado sempre que há um push (commit) na branch main.
 
-Jobs:
+Jobs
 
-jobs:
- build:
-   runs-on: ubuntu-latest
+O workflow é composto por três jobs principais: build, deploy e notify.
+build
 
+Este job realiza a construção e testes do projeto.
+Etapas:
 
-Job: build
-Descrição: Este job é responsável pela construção e validação do código.
-runs-on: ubuntu-latest
-Descrição: O job será executado em um ambiente Ubuntu com a versão mais recente
-steps:
-   - name: Clonar o código
-     uses: actions/checkout@v2
+Clonar o repositório:
 
+name: Clonar o código uses: actions/checkout@v2
+Configurar o Python:
 
-   - name: Configurar o python
-     uses: actions/setup-python@v2
-     with:
-       python-version: '3.9'
+name: Configurar o python uses: actions/setup-python@v2 with: python-version: '3.9'
+Instalar dependências:
 
+name: Instalar as dependências run: | python -m pip install --upgrade pip pip install -r requirements.txt
+Executar testes:
 
+name: Run tests run: | pytest
+Gerar artefatos:
 
-actions/checkout@v2
-Descrição: Este passo usa a ação checkout para clonar o repositório e obter os arquivos necessários para o pipeline.
-actions/setup-python@v2
-Descrição: Esse passo configura a versão do python 3.9 no ambiente do runner. Ele usa a ação setup-python para garantir que a versão correta do Python esteja disponível.
-- name: Instalar as dependêcias
-     run: |
-       python -m pip install --upgrade pip
-       pip install -r requirements.txt
+name: Criar artefato com resultados dos testes run: | mkdir -p artifact pytest > artifact/test_results.log
+Upload dos artefatos:
 
+name: Fazer upload do artefato uses: actions/upload-artifact@v3 with: name: test-results-artifact path: artifact/test_results.log
+deploy
 
-   - name: Run tests
-     run: |
-       pytest
+Este job realiza a implantação do projeto na Vercel após a execução bem-sucedida do job build.
+Etapas:
 
-run: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
+Instalar o Vercel:
 
-Descrição: Aqui, o pip é atualizado para a versão mais recente e as dependências do projeto são instaladas a partir do arquivo requirements.txt, que lista as bibliotecas necessárias para o projeto Python.
+name: Instalando o vercel run: npm install --global vercel
 
-run: |
-    pytest
+Realizar deploy:
 
-Descrição: Esse passo executa os testes do projeto usando o pytest, que é uma ferramenta de testes para Python. Ele irá garantir que o código não quebre e que tudo esteja funcionando corretamente.
+name: Deploy run: vercel deploy --yes --token=${{secrets.TOKEN_VERCEL}} --name my-project
 
-- name: Criar artefato com resultados dos testes
-     run: |
-       mkdir -p artifact
-       pytest > artifact/test_results.log
-    
-   - name: Fazer upload do artefato
-     uses: actions/upload-artifact@v3
-     with:
-         name: test-results-artifact
-         path: artifact/test_results.log
+notify
 
-run: |
-    mkdir -p artifact
-    pytest > artifact/test_results.log
+Este job é executado apenas em caso de falha nos jobs anteriores.
+Etapas:
 
-Descrição: O comando pytest é executado novamente, mas dessa vez com a saída redirecionada para o arquivo test_results.log. Este arquivo será usado como artefato.
+Enviar e-mail de notificação:
 
-uses: actions/upload-artifact@v3
-  with:
-      name: test-results-artifact
-      path: artifact/test_results.log
+name: Enviar e-mail de notificação uses: dawidd6/action-send-mail@v3 with: server_address: smtp.gmail.com server_port: 587 username: 
+s
+e
+c
+r
+e
+t
+s
+.
+E
+M
+A
+I
+L
+U
+S
+E
+R
+N
+A
+M
+E
+p
+a
+s
+s
+w
+o
+r
+d
+:
+{{ secrets.EMAIL_PASSWORD }} subject: 'CI Pipeline Status' body: 'CI Pipeline Failed' to: ${{vars.VAR_EMAIL}} from: 'ci-notifications@gmail.com'
 
-Descrição: Aqui, o arquivo test_results.log é carregado como um artefato usando a ação upload-artifact. Isso permite que o arquivo de resultados dos testes seja preservado e acessado depois.
+Variáveis e Segredos
 
-Deploy
+TOKEN_VERCEL: Token de autenticação para a Vercel.
 
-deploy:
-   runs-on: ubuntu-latest
-   needs: build
+EMAIL_USERNAME: Endereço de e-mail utilizado para envio de notificações.
 
+EMAIL_PASSWORD: Senha do e-mail para envio.
 
-runs-on: ubuntu-latest:
+VAR_EMAIL: Endereço de e-mail do destinatário das notificações.
 
-Descrição: O job também é executado em um ambiente Ubuntu.
+Execução
 
-needs: build:
+Para executar este fluxo de trabalho, basta fazer um push na branch main do repositório. O GitHub Actions iniciará automaticamente os jobs definidos.
 
-O job deploy depende do sucesso do job build. Ou seja, o deploy só será executado se o job de build for concluído com sucesso.
+Caso ocorra uma falha, um e-mail será enviado para o destinatário especificado nas variáveis de ambiente.
 
+Essa documentação fornece uma visão detalhada do pipeline de CI, garantindo que todos os envolvidos compreendam o fluxo de trabalho e os processos envolvidos. Para executar este fluxo de trabalho, basta fazer um push na branch main do repositório. O GitHub Actions iniciará automaticamente os jobs definidos.
+
+Caso ocorra uma falha, um e-mail será enviado para o destinatário especificado nas variáveis de ambiente.
+
+Essa documentação fornece uma visão detalhada do pipeline de CI, garantindo que todos os envolvidos compreendam o fluxo de trabalho e os processos envolvidos.
