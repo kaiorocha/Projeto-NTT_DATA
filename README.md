@@ -89,7 +89,7 @@ Etapas:
  - environment:
     - name: produção  
     - url: https://site-ntt.com
-```
+````
   Instalar o Vercel:
 ```yml
   - name: Instalando o vercel
