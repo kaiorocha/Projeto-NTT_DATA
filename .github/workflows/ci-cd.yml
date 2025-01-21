@@ -1,10 +1,9 @@
-name: CI Pipeline
+name: CI - NTT DATA
 
 on: 
   push:
     branches:
         - main
-  workflow_dispatch:
 
 jobs:
   build:
@@ -27,3 +26,14 @@ jobs:
     - name: Run tests
       run: |
         pytest
+        - name: Criar artefato com resultados dos testes
+        run: |
+          mkdir -p artifact
+          # Gerar um arquivo de log ou qualquer outro artefato desejado
+          pytest > artifact/test_results.log
+      
+    - name: Fazer upload do artefato
+      uses: actions/upload-artifact@v2
+      with:
+          name: test-results-artifact
+          path: artifact/test_results.log
