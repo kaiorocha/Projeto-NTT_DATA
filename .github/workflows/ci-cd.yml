@@ -47,7 +47,7 @@ jobs:
     steps:
      - name: Fazer deploy para produção
        run: |
-        eckho "Fazendo deploy..."
+        echo "Fazendo deploy..."
 
   notify:
     runs-on: ubuntu-latest
