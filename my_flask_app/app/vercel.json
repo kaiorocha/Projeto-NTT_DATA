@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "builds": [
+  {
+    "src": "main.py",
+    "use": "@vercel/python",
+    "config": { "startCommand": "gunicorn main:app --bind 0.0.0.0:$PORT" }
+  }
+]
+,
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "main.py"
+      }
+    ]
+  }
+  
