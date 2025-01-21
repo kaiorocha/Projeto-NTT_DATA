@@ -46,7 +46,7 @@ jobs:
      url: https://site-ntt.com
     steps:
      - name: Fazer deploy para produção
-       run: |
+       run:|
         echo "Fazendo deploy..."
 
   notify:
