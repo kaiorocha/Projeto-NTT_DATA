@@ -49,11 +49,8 @@ jobs:
       run: npm install --global vercel
         
     - name: Deploy
-      run: vercel deploy --yes --token=${{secrets.TOKEN_VERCEL}}
+      run: vercel deploy --yes --token=${{secrets.TOKEN_VERCEL}} --name my-project
 
-    - name: Fazer deploy para produção
-      run: |
-        echo "Fazendo deploy..."
 
   notify:
     runs-on: ubuntu-latest
