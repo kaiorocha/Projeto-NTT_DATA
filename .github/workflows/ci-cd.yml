@@ -44,3 +44,8 @@ jobs:
     environment:
      name: produção  # Nome do ambiente configurado no GitHub
      url: https://site-ntt.com
+    steps:
+     - name: Fazer deploy para produção
+       run: |
+        echo "Fazendo deploy..."
+
