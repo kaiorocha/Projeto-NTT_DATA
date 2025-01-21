@@ -93,6 +93,9 @@ Etapas:
     - name: produção  
     - url: https://site-ntt.com
 ````
+![Aprovação de deploy](https://github.com/user-attachments/assets/78565d00-3a3a-4bd6-b3de-612d45f6d387)
+
+
   Instalar o Vercel:
 ```yml
   - name: Instalando o vercel
